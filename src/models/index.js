@@ -1,22 +1,24 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../config/database');
 
-const Address = require('./address');
-const Costumer = require('./costumer');
-const Order = require('./order');
-const Product = require('./product');
+const address = require('./address')(sequelize, Sequelize.DataTypes);
+const customer = require('./customer')(sequelize, Sequelize.DataTypes);
+const order = require('./order')(sequelize, Sequelize.DataTypes);
+const product = require('./product')(sequelize, Sequelize.DataTypes);
 
-const address = Address(sequelize, Sequelize.DataTypes);
-const costumer = Costumer(sequelize, Sequelize.DataTypes);
-const order = Order(sequelize, Sequelize.DataTypes);
-const product = Product(sequelize, Sequelize.DataTypes);
+address.hasOne(customer);
+customer.belongsTo(address, { foreignKey: 'address_id'});
+customer.hasMany(order);
+order.belongsTo(customer, { foreignKey: 'customer_id'});
+product.hasOne(order);
+order.belongsTo(product, { foreignKey: 'product_id'});
 
 const db = {
     address,
-    costumer,
+    customer,
     order,
     product,
-    sequelize    
+    sequelize
 };
 
 module.exports = db;

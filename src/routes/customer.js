@@ -1,11 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const { costumer } = require('../models');
+const { customer } = require('../models');
 const { body, check, validationResult } = require('express-validator');
-const CostumerController = require('../controllers/costumer');
+const CustomerController = require('../controllers/customer');
 const { cpf } = require('cpf-cnpj-validator');
 
-const costumerController = new CostumerController(costumer);
+const customerController = new CustomerController(customer);
 
 router.post('/',
     check('name').not().isEmpty(),
@@ -26,37 +26,36 @@ router.post('/',
 
         if (!errors.isEmpty()) {
             console.log(errors.array())
-            return res.status(400).json( { errors: errors.array() } );
+            return res.status(400).json({ errors: errors.array() });
         }
 
         if (!cpf.isValid(body.cpf)) {
             return res.status(400).json("Invalid CPF");
         }
-        
+
         try {
-            const usuarioCadastrado = await costumerController.create(body);
-            res.status(201).send(usuarioCadastrado);
-        } catch(erro) {
-            res.status(400).send(erro.message);
-        }  
+            const customerData = await customerController.create(body);
+            res.status(201).send(customerData);
+        } catch (error) {
+            res.status(400).send(error.message);
+        }
     }
 )
 
 router.get('/', async (req, res) => {
     const { id } = req.query;
-
     if (!id) {
-        const costumer = await costumerController.getAll();
-        res.status(200).json(costumer);
-    } 
-    
-    const costumer = await costumerController.getById(id);
-    res.status(200).json(costumer);
+        const customer = await customerController.getAll();
+        res.status(200).json(customer);
+    }
+
+    const customer = await customerController.getById(id);
+    res.status(200).json(customer);
 })
 
-router.get('/deleteds', async (req, res) => {
-    const costumer = await costumerController.getDeletedsCostumers();
-    res.status(200).json(costumer);
+router.get('/deleted', async (req, res) => {
+    const custormer = await customerController.getDeletedCustomers();
+    res.status(200).send(custormer);
 })
 
 router.put('/:id',
@@ -64,7 +63,7 @@ router.put('/:id',
         .if(body('email').exists())
         .isEmail(),
     check('birthdate') //format: 'YYYY/MM/DD'
-        .if(body('birthdate').exists()) 
+        .if(body('birthdate').exists())
         .isDate()
         .withMessage('Invalid date'),
     check('address.cep')
@@ -74,46 +73,41 @@ router.put('/:id',
     async (req, res) => {
         const { id } = req.params;
         const errors = validationResult(req);
-        
+
         if (!errors.isEmpty()) {
-            return res.status(400).json( { errors: errors.array() } );
+            return res.status(400).json({ errors: errors.array() });
         }
 
-        const costumerData = req.body;
+        const customerData = req.body;
 
         try {
-            await costumerController.update(id, costumerData);
-            res.status(202).send( { message: 'User successfully updated' } );
-        } catch(erro) {
-            res.status(400).send(erro.message);
+            await customerController.update(id, customerData);
+            res.status(202).send({ message: 'Customer successfully updated' });
+        } catch (error) {
+            res.status(400).send(error.message);
         }
     }
 )
 
 router.delete('/:id', async (req, res) => {
     const { id } = req.params;
-    const errors = validationResult(req);
-
-    if (!errors.isEmpty()) {
-        return res.status(400).json( { errors: errors.array() } );
-    }
 
     try {
-        await costumerController.delete(id);
-        res.status(200).send( { message: 'User successfully deleted' } );
-    } catch(erro) {
-        res.status(400).send(erro.message);
+        await customerController.delete(id);
+        res.status(200).send({ message: 'Customer successfully deleted' });
+    } catch (error) {
+        res.status(400).send(error.message);
     }
 })
 
-router.put('/deleteds/:id', async (req, res) => {
+router.put('/deleted/:id', async (req, res) => {
     const { id } = req.params;
-    
+
     try {
-        await costumerController.restoreDeletedCostumer(id);
-        res.status(200).send( { message: 'User successfully restored' } );
-    } catch(erro) {
-        res.status(400).send(erro.message);
+        await customerController.restoreDeletedCustomer(id);
+        res.status(200).send({ message: 'Customer successfully restored' });
+    } catch (error) {
+        res.status(400).send(error.message);
     }
 })
 

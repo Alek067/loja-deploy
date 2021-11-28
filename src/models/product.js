@@ -18,29 +18,21 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false
         },
         weight: {
-            type: DataTypes.STRING,
+            type: DataTypes.INTEGER,
             allowNull: false
         },
         price: {
-            type: DataTypes.STRING,
+            type: DataTypes.DOUBLE,
             allowNull: false
         },
-        quantity_stock: {
+        stock: {
             type: DataTypes.INTEGER,
             allowNull: false
         },
     }, {
         tableName: 'products',
-        underscored: true,
-        paranoid: true
+        underscored: true
     });
-
-    Product.associate = function (models) {
-        Product.hasMany(models.Order, {
-            foreignKey: 'id',
-            as: 'order'
-        });
-    }
 
     return Product
 };

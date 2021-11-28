@@ -1,4 +1,4 @@
-module.exports = ( sequelize, DataTypes) => {
+module.exports = (sequelize, DataTypes) => {
     const Address = sequelize.define('Address', {
         id: {
             type: DataTypes.BIGINT,
@@ -40,12 +40,5 @@ module.exports = ( sequelize, DataTypes) => {
         paranoid: true
     });
 
-    Address.associate = function (models) {
-        Address.hasOne(models.Costumer, {
-        foreignKey: 'id',
-        as: 'costumer'
-        });
-    }
-    
     return Address;
 };

@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-    const Costumer = sequelize.define('Costumer', {
+    const Customer = sequelize.define('Customer', {
         id: {
             type: DataTypes.BIGINT,
             autoIncrement: true,
@@ -22,30 +22,11 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.DATE,
             allowNull: false
         },
-        address_id: {
-            type: DataTypes.BIGINT,
-            allowNull: false,
-            references: {
-                model: { tableName: 'addresses' },
-                key: 'id'
-            }
-        },
     }, {
-        tableName: 'costumers',
+        tableName: 'customers',
         underscored: true,
         paranoid: true
     });
 
-    Costumer.associate = function (models) {
-        Costumer.belongsTo(models.Address, {
-            foreignKey: 'address_id',
-            as: 'address'
-        });
-        Costumer.hasMany(models.Order, {
-            foreignKey: 'id',
-            as: 'order'
-        });
-    }
-
-    return Costumer;
+    return Customer;
 };
