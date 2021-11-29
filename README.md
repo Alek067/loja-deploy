@@ -286,6 +286,7 @@ Com a API em funcionamento, vamos rodar os testes via [Insomnia](https://insomni
     - Caso não, retorna todos os produtos;
     - Caso seja informado um ID inválido, retorna um array vazio.
   - Query:  id = INT
+
   RETORNO:
 
   ```
@@ -374,6 +375,7 @@ Com a API em funcionamento, vamos rodar os testes via [Insomnia](https://insomni
 - __<u>Atualizar um cliente</u>__ - rota: *http://localhost:3001/customer/{customerId}*
   - Informar o ID do cliente a ser atualizado no parâmetro.
   - CPF não pode ser atualizado no cadastro, caso seja informado no corpo da requisição, retorna o erro: <code>400 { "message":"CPF cannot be changed" }</code>
+  
   Preencher o JSON, conforme exemplo:
 
   ```
