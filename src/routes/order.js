@@ -14,9 +14,6 @@ router.get('/', async (req, res) => {
 router.get('/:customerId', async (req, res) => {
     const { customerId } = req.params;
     const { status } = req.query;
-
-    // const order = await orderController.getByCustomerId(customer_id);
-    // res.status(200).json(order);
     const order = await orderController.getByCustomerId(customerId, status);
     res.status(200).json(order);
 })

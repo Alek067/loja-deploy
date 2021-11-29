@@ -31,7 +31,7 @@ class CustomerController {
                     { email }
                 ]
             },
-            paranoid: false  //busca independente de ter sido deletado
+            paranoid: false
         });
 
         if (customer) {

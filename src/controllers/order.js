@@ -120,11 +120,11 @@ class OrderController {
         });
 
         if(!order) {
-          throw new Error('Order ID not found');
+          throw new Error(JSON.stringify({ message: 'Order ID not found' }));
         }
 
         if(order.status == "closed") {
-          throw new Error("Isn't possible to exclude product from a completed order");
+          throw new Error(JSON.stringify({ message: "Isn't possible to exclude product from a completed order" }));
         }
 
         return order.destroy();
@@ -153,7 +153,6 @@ class OrderController {
             return;
         });
     }
-
 }
 
 module.exports = OrderController;
