@@ -8,7 +8,7 @@ const router = express.Router();
 
 router.get("/", function (req, res) {
     res.status(200).send({
-        title: "API Vaccination Control",
+        title: "API Store Nodejs SQLite",
         version: "1.0.0"
     });
 });
