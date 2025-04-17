@@ -1,20 +1,17 @@
 const express = require('express');
-
-const customerRouter = require('./customer');
-const orderRouter = require('./order');
-const productRouter = require('./product');
-
 const router = express.Router();
+const db = require('../models'); // importa todos os models
+const Product = db.products; // pega o model de produtos
 
-router.get("/", function (req, res) {
-    res.status(200).send({
-        title: "API Store Nodejs SQLite",
-        version: "1.0.0"
-    });
+// GET /produtos -> lista do banco
+router.get('/produtos', async (req, res) => {
+  try {
+    const produtos = await Product.findAll(); // busca todos
+    res.json(produtos);
+  } catch (error) {
+    console.error('Erro ao buscar produtos:', error);
+    res.status(500).json({ error: 'Erro ao buscar produtos' });
+  }
 });
-
-router.use('/customer', customerRouter);
-router.use('/order', orderRouter);
-router.use('/product', productRouter);
 
 module.exports = router;

@@ -1,17 +1,25 @@
 require('dotenv').config();
 const express = require('express');
-const routers = require('./routes')
 const { sequelize } = require('./models');
 const app = express();
 const port = process.env.PORT || 3001;
 
 app.use(express.json());
-app.use('/', routers)
 
+// Rota de teste para listar produtos (exemplo)
+app.get('/produtos', (req, res) => {
+  res.json([
+    { id: 1, nome: 'Tênis', preco: 199.99 },
+    { id: 2, nome: 'Camiseta', preco: 59.90 },
+  ]);
+});
+
+// Conecta com o banco
 sequelize.sync().then(() => {
-    console.log('Successfully connected to the database')
-})
+  console.log('Successfully connected to the database');
+});
 
-app.listen(port, function () {
-    console.log(`Connected server on port: ${port}`);
+// Sobe o servidor
+app.listen(port, () => {
+  console.log(`Connected server on port: ${port}`);
 });
